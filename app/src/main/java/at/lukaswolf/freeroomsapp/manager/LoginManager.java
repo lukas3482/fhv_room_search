@@ -3,7 +3,12 @@ package at.lukaswolf.freeroomsapp.manager;
 import android.content.SharedPreferences;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import at.lukaswolf.freeroomsapp.cookies.SimpleCookieJar;
 import lombok.AllArgsConstructor;
 import okhttp3.Cookie;
 import okhttp3.FormBody;
@@ -17,6 +22,7 @@ public class LoginManager {
 
     private final SharedPreferences prefs;
     private final OkHttpClient httpClient;
+    private final RestManager restManager;
 
     public boolean doLoginRequest() throws IOException {
         String savedUser = prefs.getString("USERNAME", null);
@@ -38,9 +44,42 @@ public class LoginManager {
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-            this.saveCookie(httpClient.cookieJar().loadForRequest(null).get(0));
+            this.saveCookie(((SimpleCookieJar)httpClient.cookieJar()).loadForRequest().get(0));
             return response.isSuccessful();
         }
+    }
+
+    public boolean checkIfStillLoggedIn() {
+        AtomicBoolean stillLoggedIn = new AtomicBoolean(true);
+        Thread worker = new Thread(() -> {
+            try {
+                boolean selOk = restManager.selectRooms();
+                if (!selOk) {
+                    stillLoggedIn.set(this.doLoginRequest());
+                    return;
+                }
+
+                String dateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                String schedule = restManager.loadSchedule(dateStr);
+                if (schedule == null) {
+                    stillLoggedIn.set(this.doLoginRequest());
+                    return;
+                }
+
+                if (schedule.trim().equals("[]")) {
+                    stillLoggedIn.set(this.doLoginRequest());
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                this.logout();
+                stillLoggedIn.set(false);
+
+            }
+            stillLoggedIn.set(true);
+        });
+        worker.start();
+        return stillLoggedIn.get();
     }
 
     public void logout(){

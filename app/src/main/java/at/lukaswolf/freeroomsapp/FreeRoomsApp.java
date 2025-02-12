@@ -5,14 +5,13 @@ import android.content.SharedPreferences;
 
 import at.lukaswolf.freeroomsapp.cookies.SimpleCookieJar;
 import at.lukaswolf.freeroomsapp.manager.LoginManager;
+import at.lukaswolf.freeroomsapp.manager.RestManager;
 import lombok.Getter;
 import okhttp3.Cookie;
 import okhttp3.OkHttpClient;
 import okhttp3.Cache;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FreeRoomsApp extends Application {
 
@@ -20,6 +19,8 @@ public class FreeRoomsApp extends Application {
     private static OkHttpClient httpClient;
     @Getter
     private static LoginManager loginManager;
+    @Getter
+    private static RestManager restManager;
 
     @Override
     public void onCreate() {
@@ -37,15 +38,14 @@ public class FreeRoomsApp extends Application {
                 .value(prefs.getString("PHPSESSID", "le66nqidscqise2orphb4c232q"))
                 .httpOnly()
                 .build();
-        List<Cookie> cookies = new ArrayList<>();
-        cookies.add(cookie);
-        cookieJar.saveFromResponse(null, cookies);
+        cookieJar.saveCookie( cookie);
 
         httpClient = new OkHttpClient.Builder()
                 .cache(cache)
                 .cookieJar(cookieJar)
                 .build();
 
-        loginManager = new LoginManager(prefs, httpClient);
+        restManager = new RestManager(httpClient);
+        loginManager = new LoginManager(prefs, httpClient, restManager);
     }
 }

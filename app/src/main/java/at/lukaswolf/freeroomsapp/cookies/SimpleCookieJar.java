@@ -26,6 +26,15 @@ public class SimpleCookieJar implements CookieJar {
         return allCookies;
     }
 
+    public Cookie getCookie(){
+        return allCookies.get(0);
+    }
+
+    public void saveCookie(Cookie cookie){
+        this.allCookies.clear();
+        this.allCookies.add(cookie);
+    }
+
     public void addCookie(Cookie cookie){
         allCookies.clear();
         allCookies.add(cookie);

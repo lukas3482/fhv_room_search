@@ -32,11 +32,10 @@ public class LoginActivity extends AppCompatActivity {
         editPassword = findViewById(R.id.editPassword);
         textLoginStatus = findViewById(R.id.textLoginStatus);
 
-        Button btnDoLogin = findViewById(R.id.btnDoLogin);
-
         httpClient = FreeRoomsApp.getHttpClient();
         loginManager = FreeRoomsApp.getLoginManager();
 
+        Button btnDoLogin = findViewById(R.id.btnDoLogin);
         btnDoLogin.setOnClickListener(view -> doLoginOnClick());
     }
 
@@ -54,11 +53,10 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             if (success) {
-                loginManager.saveCredentials(user, pass, ((SimpleCookieJar)httpClient.cookieJar()).loadForRequest().get(0));
+                loginManager.saveCredentials(user, pass, ((SimpleCookieJar)httpClient.cookieJar()).getCookie());
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             } else {
-
                 runOnUiThread(() -> textLoginStatus.setText("Login fehlgeschlagen!"));
             }
         }).start();
