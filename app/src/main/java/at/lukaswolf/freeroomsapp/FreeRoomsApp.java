@@ -47,6 +47,5 @@ public class FreeRoomsApp extends Application {
                 .build();
 
         loginManager = new LoginManager(prefs, httpClient);
-
     }
 }

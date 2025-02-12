@@ -1,12 +1,9 @@
 package at.lukaswolf.freeroomsapp.manager;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 
 import java.io.IOException;
 
-import at.lukaswolf.freeroomsapp.activities.LoginActivity;
 import lombok.AllArgsConstructor;
 import okhttp3.Cookie;
 import okhttp3.FormBody;
@@ -67,5 +64,4 @@ public class LoginManager {
         editor.putString("PHPSESSID", cookie.value());
         editor.apply();
     }
-
 }

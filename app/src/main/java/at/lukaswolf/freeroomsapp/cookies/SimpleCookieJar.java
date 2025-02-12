@@ -7,9 +7,6 @@ import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 
-/**
- * Speichert Cookies (z.B. Session-Cookies) über alle Requests hinweg.
- */
 public class SimpleCookieJar implements CookieJar {
 
     private final List<Cookie> allCookies = new ArrayList<>();
