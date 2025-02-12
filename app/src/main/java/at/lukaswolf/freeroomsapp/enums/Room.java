@@ -5,7 +5,9 @@ import lombok.Getter;
 @Getter
 public enum Room {
 
+    U126(38, "U126 Projektraum E"),
     U130(39, "U130 eLab"),
+    U131(40, "Lab. auton. Systeme"),
     U204(41, "U204"),
     U205(42, "U205"),
     U206(43, "U206"),
@@ -28,11 +30,11 @@ public enum Room {
     U313(59, "U313"),
     U314(60, "U314"),
     U315(61, "U315"),
-    U325(82, "U325"),
-    U326(63, "U326"),
-    U327(64, "U327"),
-    U328(65, "U328"),
-    U329(66, "U329"),
+    U325(82, "U325 DesignThinkingLab"),
+    U326(63, "U326 nw-lab"),
+    U327(64, "U327 db-lab"),
+    U328(65, "U328 se-lab"),
+    U329(66, "U329 cad-lab2"),
     U330(67, "U330"),
     U404(68, "U404"),
     U405(69, "U405"),
@@ -44,12 +46,12 @@ public enum Room {
     U413(75, "U413"),
     U414(76, "U414"),
     U415(77, "U415"),
-    U425(78, "U425"),
-    U426(79, "U426"),
-    U427(80, "U427"),
+    U425(78, "U425 PC-Pool"),
+    U426(79, "U426 PC-Pool"),
+    U427(80, "U427 3D/CAD Lab/PC-Pool"),
     U428(81, "U428"),
-    U429(62, "U429"),
-    U430(83, "U430");
+    U429(62, "U429 PC-Pool"),
+    U430(83, "U430 PC-Pool");
 
     private final int id;
     private final String name;
