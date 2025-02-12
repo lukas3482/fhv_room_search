@@ -10,7 +10,6 @@ import android.os.Looper;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -151,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 hoursToCheck = Integer.parseInt(hStr);
             }
         } catch (NumberFormatException e) {
-            // Standard 3
+            // Es wurde keine gültige Zahl eingegeben -> 3 wird verwendet
         }
 
         boolean debugMode = checkDebug.isChecked();
@@ -159,14 +158,12 @@ public class MainActivity extends AppCompatActivity {
         int finalHoursToCheck = hoursToCheck;
         Thread worker = new Thread(() -> {
             try {
-                // selectRooms
                 if (!selectRooms()) {
                     postResult("Raum-Auswahl fehlgeschlagen. Evtl. Session ungültig?");
                     reLogin();
                     return;
                 }
 
-                // schedule
                 String scheduleJson = loadSchedule(finalDate);
                 if (scheduleJson == null) {
                     postResult("Stundenplan-Abfrage fehlgeschlagen -> evtl. Session ungültig");
@@ -175,15 +172,13 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (scheduleJson.trim().equals("[]")) {
-                    postResult("Schedule == [] => nicht eingeloggt => Re-Login");
+                    postResult("Session ist nicht mehr gültig -> Re-Login");
                     reLogin();
                     return;
                 }
 
-                // Daten auswerten
                 String resultText = evaluateRooms(scheduleJson, finalHoursToCheck, debugMode);
                 postResult(resultText);
-
             } catch (Exception e) {
                 e.printStackTrace();
                 postResult("Fehler: " + e.getMessage());
