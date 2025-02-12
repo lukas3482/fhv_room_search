@@ -1,4 +1,4 @@
-package at.lukaswolf.freeroomsapp.cookies;
+package at.lukaswolf.fhv_room_search.cookies;
 
 import java.util.ArrayList;
 import java.util.List;

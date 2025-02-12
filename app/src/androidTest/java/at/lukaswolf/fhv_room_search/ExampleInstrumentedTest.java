@@ -1,4 +1,4 @@
-package at.lukaswolf.freeroomsapp;
+package at.lukaswolf.fhv_room_search;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("at.lukaswolf.freeroomsapp", appContext.getPackageName());
+        assertEquals("at.lukaswolf.fhv_room_search", appContext.getPackageName());
     }
 }

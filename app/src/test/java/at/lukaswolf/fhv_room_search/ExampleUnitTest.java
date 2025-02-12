@@ -1,4 +1,4 @@
-package at.lukaswolf.freeroomsapp;
+package at.lukaswolf.fhv_room_search;
 
 import org.junit.Test;
 

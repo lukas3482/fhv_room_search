@@ -1,4 +1,4 @@
-package at.lukaswolf.freeroomsapp.enums;
+package at.lukaswolf.fhv_room_search.enums;
 
 import lombok.Getter;
 

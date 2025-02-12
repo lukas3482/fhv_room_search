@@ -1,8 +1,8 @@
-package at.lukaswolf.freeroomsapp.manager;
+package at.lukaswolf.fhv_room_search.manager;
 
 import java.io.IOException;
 
-import at.lukaswolf.freeroomsapp.enums.Room;
+import at.lukaswolf.fhv_room_search.enums.Room;
 import lombok.AllArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

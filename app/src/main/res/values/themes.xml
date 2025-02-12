@@ -13,7 +13,7 @@
 <!--        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>-->
 <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
 <!--    </style>-->
-    <style name="Theme.FreeRoomsApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.FHVRoomSearch" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primärfarben -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>

@@ -1,11 +1,11 @@
-package at.lukaswolf.freeroomsapp;
+package at.lukaswolf.fhv_room_search;
 
 import android.app.Application;
 import android.content.SharedPreferences;
 
-import at.lukaswolf.freeroomsapp.cookies.SimpleCookieJar;
-import at.lukaswolf.freeroomsapp.manager.LoginManager;
-import at.lukaswolf.freeroomsapp.manager.RestManager;
+import at.lukaswolf.fhv_room_search.cookies.SimpleCookieJar;
+import at.lukaswolf.fhv_room_search.manager.LoginManager;
+import at.lukaswolf.fhv_room_search.manager.RestManager;
 import lombok.Getter;
 import okhttp3.Cookie;
 import okhttp3.OkHttpClient;
@@ -13,7 +13,7 @@ import okhttp3.Cache;
 
 import java.io.File;
 
-public class FreeRoomsApp extends Application {
+public class FHVRoomSearch extends Application {
 
     @Getter
     private static OkHttpClient httpClient;

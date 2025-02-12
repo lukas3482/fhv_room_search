@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "at.lukaswolf.freeroomsapp"
+    namespace = "at.lukaswolf.fhv_room_search"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "at.lukaswolf.freeroomsapp"
+        applicationId = "at.lukaswolf.fhv_room_search"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

@@ -1,11 +1,11 @@
-package at.lukaswolf.freeroomsapp.manager;
+package at.lukaswolf.fhv_room_search.manager;
 
 import org.json.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import at.lukaswolf.freeroomsapp.enums.Room;
+import at.lukaswolf.fhv_room_search.enums.Room;
 
 public class RoomEvaluator {
     private final String scheduleJson;

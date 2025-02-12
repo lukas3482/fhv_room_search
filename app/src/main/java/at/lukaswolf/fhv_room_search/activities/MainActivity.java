@@ -1,4 +1,4 @@
-package at.lukaswolf.freeroomsapp.activities;
+package at.lukaswolf.fhv_room_search.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,11 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import at.lukaswolf.freeroomsapp.FreeRoomsApp;
-import at.lukaswolf.freeroomsapp.R;
-import at.lukaswolf.freeroomsapp.manager.LoginManager;
-import at.lukaswolf.freeroomsapp.manager.RestManager;
-import at.lukaswolf.freeroomsapp.manager.RoomEvaluator;
+import at.lukaswolf.fhv_room_search.FHVRoomSearch;
+import at.lukaswolf.fhv_room_search.R;
+import at.lukaswolf.fhv_room_search.manager.LoginManager;
+import at.lukaswolf.fhv_room_search.manager.RestManager;
+import at.lukaswolf.fhv_room_search.manager.RoomEvaluator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnCheck = findViewById(R.id.btnCheck);
         Button btnLogout = findViewById(R.id.btnLogout);
 
-        loginManager = FreeRoomsApp.getLoginManager();
-        restManager = FreeRoomsApp.getRestManager();
+        loginManager = FHVRoomSearch.getLoginManager();
+        restManager = FHVRoomSearch.getRestManager();
         uiHandler = new Handler(Looper.getMainLooper());
 
         SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);

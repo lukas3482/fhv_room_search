@@ -1,4 +1,4 @@
-package at.lukaswolf.freeroomsapp.manager;
+package at.lukaswolf.fhv_room_search.manager;
 
 import android.content.SharedPreferences;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import at.lukaswolf.freeroomsapp.cookies.SimpleCookieJar;
+import at.lukaswolf.fhv_room_search.cookies.SimpleCookieJar;
 import lombok.AllArgsConstructor;
 import okhttp3.Cookie;
 import okhttp3.FormBody;

@@ -1,4 +1,4 @@
-package at.lukaswolf.freeroomsapp.activities;
+package at.lukaswolf.fhv_room_search.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
-import at.lukaswolf.freeroomsapp.FreeRoomsApp;
-import at.lukaswolf.freeroomsapp.R;
-import at.lukaswolf.freeroomsapp.cookies.SimpleCookieJar;
-import at.lukaswolf.freeroomsapp.manager.LoginManager;
+import at.lukaswolf.fhv_room_search.FHVRoomSearch;
+import at.lukaswolf.fhv_room_search.R;
+import at.lukaswolf.fhv_room_search.cookies.SimpleCookieJar;
+import at.lukaswolf.fhv_room_search.manager.LoginManager;
 import okhttp3.OkHttpClient;
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,8 +32,8 @@ public class LoginActivity extends AppCompatActivity {
         editPassword = findViewById(R.id.editPassword);
         textLoginStatus = findViewById(R.id.textLoginStatus);
 
-        httpClient = FreeRoomsApp.getHttpClient();
-        loginManager = FreeRoomsApp.getLoginManager();
+        httpClient = FHVRoomSearch.getHttpClient();
+        loginManager = FHVRoomSearch.getLoginManager();
 
         Button btnDoLogin = findViewById(R.id.btnDoLogin);
         btnDoLogin.setOnClickListener(view -> doLoginOnClick());
