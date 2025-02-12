@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp" >
+
+    <EditText
+        android:id="@+id/editDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:hint="Datum (YYYY-MM-DD) oder leer für heute"/>
+
+    <EditText
+        android:id="@+id/editHours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="5"
+        android:hint="Stunden (z.B. 3)"
+        android:inputType="number"/>
+
+    <CheckBox
+        android:id="@+id/checkDebug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Debugmodus (auch belegte Räume anzeigen)"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+        <Button
+            android:id="@+id/btnCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Räume prüfen" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout" />
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/textResult"
+        android:layout_width="match_parent"
+        android:layout_height="301dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:textSize="16sp" />
+    
+
+</LinearLayout>
