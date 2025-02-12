@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "FreeRoomsApp"
+rootProject.name = "fhv_room_search"
 include(":app")
