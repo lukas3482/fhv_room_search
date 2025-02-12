@@ -1,4 +1,4 @@
-package at.lukaswolf.freeroomsapp;
+package at.lukaswolf.freeroomsapp.cookies;
 
 import java.util.ArrayList;
 import java.util.List;

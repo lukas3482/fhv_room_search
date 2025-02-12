@@ -3,6 +3,9 @@ package at.lukaswolf.freeroomsapp;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import at.lukaswolf.freeroomsapp.cookies.SimpleCookieJar;
+import at.lukaswolf.freeroomsapp.manager.LoginManager;
+import lombok.Getter;
 import okhttp3.Cookie;
 import okhttp3.OkHttpClient;
 import okhttp3.Cache;
@@ -11,9 +14,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyApp extends Application {
+public class FreeRoomsApp extends Application {
 
+    @Getter
     private static OkHttpClient httpClient;
+    @Getter
+    private static LoginManager loginManager;
 
     @Override
     public void onCreate() {
@@ -40,9 +46,7 @@ public class MyApp extends Application {
                 .cookieJar(cookieJar)
                 .build();
 
-    }
+        loginManager = new LoginManager(prefs, httpClient);
 
-    public static OkHttpClient getHttpClient() {
-        return httpClient;
     }
 }

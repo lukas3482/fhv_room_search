@@ -7,4 +7,38 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary -->
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryVariant">#388E3C</color>
+    <color name="colorPrimaryLight">#C8E6C9</color>
+
+    <!-- Secondary -->
+    <color name="colorSecondary">#FFA726</color>
+    <color name="colorSecondaryVariant">#F57C00</color>
+    <color name="colorSecondaryLight">#FFE0B2</color>
+
+    <!-- Background & Surface -->
+    <color name="colorBackground">#F5F5F5</color>
+    <color name="colorSurface">#FFFFFF</color>
+
+    <color name="colorBackgroundNight">#121212</color>
+    <color name="colorSurfaceNight">#1E1E1E</color>
+
+    <!-- Error -->
+    <color name="colorError">#B00020</color>
+
+    <!-- “On” Colors (Text- und Icon-Farben auf den oberen Flächen) -->
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorOnBackground">#000000</color>
+    <color name="colorOnSurface">#000000</color>
+    <color name="colorOnError">#FFFFFF</color>
+
+    <!-- “On” Colors (Text- und Icon-Farben auf den oberen Flächen) -->
+    <color name="colorOnPrimaryNight">#000000</color>
+    <color name="colorOnSecondaryNight">#000000</color>
+    <color name="colorOnBackgroundNight">#FFFFFF</color>
+    <color name="colorOnSurfaceNight">#FFFFFF</color>
+    <color name="colorOnErrorNight">#000000</color>
 </resources>

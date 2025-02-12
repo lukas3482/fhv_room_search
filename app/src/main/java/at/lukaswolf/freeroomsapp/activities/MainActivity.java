@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -19,13 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import at.lukaswolf.freeroomsapp.MyApp;
+import at.lukaswolf.freeroomsapp.FreeRoomsApp;
 import at.lukaswolf.freeroomsapp.R;
-import okhttp3.Cookie;
+import at.lukaswolf.freeroomsapp.enums.Room;
+import at.lukaswolf.freeroomsapp.manager.LoginManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.FormBody;
 import okhttp3.Response;
 
 import org.json.JSONObject;
@@ -40,61 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView textResult;
 
     private OkHttpClient httpClient;
-
-    private static final String[][] ROOM_MAP = {
-            {"39",  "U130 eLab"},
-            {"41",  "U204"},
-            {"42",  "U205"},
-            {"43",  "U206"},
-            {"44",  "U207"},
-            {"45",  "U210"},
-            {"46",  "U212"},
-            {"47",  "U214"},
-            {"48",  "U215"},
-            {"297", "U216"},
-            {"49",  "U225"},
-            {"50",  "U226"},
-            {"51",  "U227"},
-            {"52",  "U304"},
-            {"53",  "U305"},
-            {"4",   "U306"},
-            {"55",  "U307"},
-            {"56",  "U310"},
-            {"57",  "U311"},
-            {"58",  "U312"},
-            {"59",  "U313"},
-            {"60",  "U314"},
-            {"61",  "U315"},
-            {"82",  "U325"},
-            {"63",  "U326"},
-            {"64",  "U327"},
-            {"65",  "U328"},
-            {"66",  "U329"},
-            {"67",  "U330"},
-            {"68",  "U404"},
-            {"69",  "U405"},
-            {"70",  "U406"},
-            {"71",  "U407"},
-            {"72",  "U410"},
-            {"73",  "U411"},
-            {"74",  "U412"},
-            {"75",  "U413"},
-            {"76",  "U414"},
-            {"77",  "U415"},
-            {"78",  "U425"},
-            {"79",  "U426"},
-            {"80",  "U427"},
-            {"81",  "U428"},
-            {"62",  "U429"},
-            {"83",  "U430"}
-    };
-
-    private String roomIdsStr;
+    private LoginManager loginManager;
     private Handler uiHandler;
 
     // Gespeicherte Login-Daten
-    private String savedUser;
-    private String savedPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,23 +55,14 @@ public class MainActivity extends AppCompatActivity {
         Button btnCheck = findViewById(R.id.btnCheck);
         Button btnLogout = findViewById(R.id.btnLogout);
 
-        httpClient = MyApp.getHttpClient();
+        httpClient = FreeRoomsApp.getHttpClient();
+        loginManager = FreeRoomsApp.getLoginManager();
         uiHandler = new Handler(Looper.getMainLooper());
 
-        // Raum-IDs in Kommaliste
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ROOM_MAP.length; i++) {
-            sb.append(ROOM_MAP[i][0]);
-            if (i < ROOM_MAP.length - 1) sb.append(",");
-        }
-        roomIdsStr = sb.toString();
-
-        // Schauen, ob wir gespeicherte Credentials haben
         SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        savedUser = prefs.getString("USERNAME", null);
-        savedPass = prefs.getString("PASSWORD", null);
+        String savedUser = prefs.getString("USERNAME", null);
+        String savedPass = prefs.getString("PASSWORD", null);
 
-        // Falls nicht vorhanden => LoginActivity starten
         if (savedUser == null || savedPass == null) {
             Toast.makeText(this, "Bitte einloggen!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
@@ -132,34 +70,19 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Sonst versuchen wir sofort, ob wir NOCH eingeloggt sind:
-        //   -> selectRooms + loadSchedule => wenn [] => nicht eingeloggt => LoginActivity
         checkIfStillLoggedIn();
-
-        // Button-Listener
-        btnCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onCheckClicked();
-            }
-        });
+        btnCheck.setOnClickListener(view -> onCheckClicked());
 
         btnLogout.setOnClickListener(view -> {
-            SharedPreferences preferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.remove("USERNAME");
-            editor.remove("PASSWORD");
-            editor.remove("PHPSESSID");
-            editor.apply();
-
+            loginManager.logout();
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         });
     }
 
     private void checkIfStillLoggedIn() {
         Thread t = new Thread(() -> {
             try {
-                // selectRooms
                 boolean selOk = selectRooms();
                 if (!selOk) {
                     postResult("Raum-Auswahl fehlgeschlagen -> evtl. nicht eingeloggt");
@@ -167,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                // loadSchedule
-                // Wir holen testweise das JSON: wenn "[]", nicht eingeloggt
                 String dateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
                 String schedule = loadSchedule(dateStr);
                 if (schedule == null) {
@@ -177,71 +98,37 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Prüfen, ob schedule == "[]"
                 if (schedule.trim().equals("[]")) {
-                    // nicht eingeloggt
                     postResult("Leere Array-Antwort => Session ungültig => bitte neu einloggen");
                     reLogin();
                     return;
                 }
-
-                // Alles okay => wir tun nichts, user kann normal weiter machen
-
             } catch (Exception e) {
                 e.printStackTrace();
                 postResult("Fehler: " + e.getMessage());
-                // evtl. reLogin()
+                loginManager.logout();
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
             }
         });
         t.start();
     }
 
-    /**
-     * Falls loadSchedule "[]" zurückgibt,
-     * führen wir einen Login mit den gespeicherten Credentials durch.
-     */
     private void reLogin() {
         new Thread(() -> {
             boolean success = false;
             try {
-                success = doLoginRequest(savedUser, savedPass);
+                success = loginManager.doLoginRequest();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             if (success) {
                 postResult("Re-Login erfolgreich. Du kannst jetzt weiterarbeiten.");
             } else {
-                // Falls das auch scheitert => LoginActivity anzeigen
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
             }
         }).start();
-    }
-
-    private boolean doLoginRequest(String user, String pass) throws IOException {
-        RequestBody formData = new FormBody.Builder()
-                .add("domain-id", "8")
-                .add("password", pass)
-                .add("username", user)
-                .add("permanent-login", "0")
-                .build();
-
-        Request request = new Request.Builder()
-                .url("https://a5.fhv.at/ajax/120/LoginResponsive/LoginHandler")
-                .post(formData)
-                .build();
-        System.out.println("Looooooggggginnnn!!!!");
-        try (Response response = httpClient.newCall(request).execute()) {
-            this.saveCookie(httpClient.cookieJar().loadForRequest(null).get(0));
-            return response.isSuccessful();
-        }
-    }
-
-    private void saveCookie(Cookie cookie){
-        SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("PHPSESSID", cookie.value());
-        editor.apply();
     }
 
     private void onCheckClicked() {
@@ -305,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean selectRooms() throws IOException {
-        String url = "https://a5.fhv.at/ajax/122/EventPlanerSite/SessionSaveJsonPage?roomIds=" + roomIdsStr;
+        String url = "https://a5.fhv.at/ajax/122/EventPlanerSite/SessionSaveJsonPage?roomIds=" + Room.getRoomIdStr();
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -367,9 +254,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            for (String[] roomInfo : ROOM_MAP) {
-                int rId = Integer.parseInt(roomInfo[0]);
-                String rName = roomInfo[1];
+            for (Room roomInfo : Room.values()) {
+                int rId = roomInfo.getId();
+                String rName = roomInfo.getName();
 
                 if (!roomEvents.containsKey(rId)) {
                     sb.append(rName).append(" ist den ganzen Zeitraum frei.\n");
